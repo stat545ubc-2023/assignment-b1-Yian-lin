@@ -11,16 +11,18 @@ knitr::opts_chunk$set(echo = TRUE)
 
 
 ```{r}
+# Please make sure you load these libraries.
 library(tidyverse)
 library(datateachr)
 library(testthat)
 ```
 
 ## Exercise 1 & 2: Make a Function and Document it
+In the code chunk below, I wrote a R function that makes a ggplot to visualize the proportion of missing values for all or selected columns in a data frame.
 ```{r}
 #' Visualization of missing values
 #'
-#' Makes a plot to visualize the proportion of missing values for all or selected columns in a data frame. Please note that this function uses functions in `tidyverse` library. Please make sure that you load that library.
+#' Makes a ggplot to visualize the proportion of missing values for all or selected columns in a data frame. Please note that this function uses functions in `tidyverse` library. Please make sure that you load that library.
 #' 
 #' @param df a data frame. I name this parameter as `df` because it is the abbreviation of data frame.
 #' @param vars a vector containing selected name(s) of variable(s) in `df`. These selected variables will be included in the plot. The default is to show the proportion of missing values for all variables in `df`. I name this parameter as `vars` because it is an abbreviation variables.
@@ -74,7 +76,7 @@ plot_missing_values_proportions <- function(df, vars=everything(),
 
 
 ## Exercise 3: Include examples
-In this section, I will demonstrate the usage of my function with a few examples. 
+In this section, I will demonstrate the usage of my function with a few examples. The datasets that I used are from the `datateachr` library.
 
 ### Example 1
 In this example, I use the function `plot_missing_values_proportions()` to visualize the proportion of missing values for all columns in the *vancouver_trees* dataset. We can specify the color of the points and lines in the plot using the `point_color` and `line_color` arguments.

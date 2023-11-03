@@ -4,6 +4,7 @@ Yian Lin
 2023-10-31
 
 ``` r
+# Please make sure you load these libraries.
 library(tidyverse)
 ```
 
@@ -44,13 +45,17 @@ library(testthat)
 
 ## Exercise 1 & 2: Make a Function and Document it
 
+In the code chunk below, I wrote a R function that makes a ggplot to
+visualize the proportion of missing values for all or selected columns
+in a data frame.
+
 ``` r
 #' Visualization of missing values
 #'
-#' Makes a plot to visualize the proportion of missing values for all or selected columns in a data frame. Please note that this function uses functions in `tidyverse` library. Please make sure that you load that library.
+#' Makes a ggplot to visualize the proportion of missing values for all or selected columns in a data frame. Please note that this function uses functions in `tidyverse` library. Please make sure that you load that library.
 #' 
 #' @param df a data frame. I name this parameter as `df` because it is the abbreviation of data frame.
-#' @param vars a vector containing selected name(s) of variable(s) in \code{df}. These selected variables will be included in the plot. The default is to show the proportion of missing values for all variables in \code{df}. I name this parameter as `vars` because it is an abbreviation variables.
+#' @param vars a vector containing selected name(s) of variable(s) in `df`. These selected variables will be included in the plot. The default is to show the proportion of missing values for all variables in `df`. I name this parameter as `vars` because it is an abbreviation variables.
 #' @param point_color the color to be used for the points. The default is "blue". The name of this param basically describe what it is for. 
 #' @param line_color the color to be used for the lines. The default is "blue". The name of this param basically describe what it is for. 
 #' @param ylab the title of the y axis. Here I use the name `ylab` to follow the ggplot convention.
@@ -79,7 +84,6 @@ plot_missing_values_proportions <- function(df, vars=everything(),
                     pivot_longer(cols = everything(),
                                  names_to = "Variable",
                                  values_to = "missing_count")
-  #print(count_missing)
   
   # Plot it
   ggplot(data = count_missing,
@@ -102,7 +106,7 @@ plot_missing_values_proportions <- function(df, vars=everything(),
 ## Exercise 3: Include examples
 
 In this section, I will demonstrate the usage of my function with a few
-examples.
+examples. The datasets that I used are from the `datateachr` library.
 
 ### Example 1
 
@@ -174,7 +178,7 @@ test_that("example1", {
 })
 ```
 
-    ## Test passed 🌈
+    ## Test passed 🎊
 
 Here I tested the function for the identity of y used in aes() in the
 two layers.
@@ -191,7 +195,7 @@ test_that("Example2", {
 })
 ```
 
-    ## Test passed 🥇
+    ## Test passed 😀
 
 Here I tested the function for the title used for the y axis.
 
@@ -217,4 +221,4 @@ You have provided an object of class: numeric")
 })
 ```
 
-    ## Test passed 😸
+    ## Test passed 🥳
