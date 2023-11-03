@@ -1,29 +1,56 @@
----
-title: "STAT545B Assignment 1"
-author: "Yian Lin"
-date: "2023-10-31"
-output: github_document
----
+STAT545B Assignment 1
+================
+Yian Lin
+2023-10-31
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+``` r
+library(tidyverse)
 ```
 
+    ## ── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+    ## ✔ dplyr     1.1.3     ✔ readr     2.1.4
+    ## ✔ forcats   1.0.0     ✔ stringr   1.5.0
+    ## ✔ ggplot2   3.4.3     ✔ tibble    3.2.1
+    ## ✔ lubridate 1.9.3     ✔ tidyr     1.3.0
+    ## ✔ purrr     1.0.2     
+    ## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+    ## ✖ dplyr::filter() masks stats::filter()
+    ## ✖ dplyr::lag()    masks stats::lag()
+    ## ℹ Use the conflicted package (<http://conflicted.r-lib.org/>) to force all conflicts to become errors
 
-```{r}
-library(tidyverse)
+``` r
 library(datateachr)
 library(testthat)
 ```
 
+    ## 
+    ## Attaching package: 'testthat'
+    ## 
+    ## The following object is masked from 'package:dplyr':
+    ## 
+    ##     matches
+    ## 
+    ## The following object is masked from 'package:purrr':
+    ## 
+    ##     is_null
+    ## 
+    ## The following objects are masked from 'package:readr':
+    ## 
+    ##     edition_get, local_edition
+    ## 
+    ## The following object is masked from 'package:tidyr':
+    ## 
+    ##     matches
+
 ## Exercise 1 & 2: Make a Function and Document it
-```{r}
+
+``` r
 #' Visualization of missing values
 #'
 #' Makes a plot to visualize the proportion of missing values for all or selected columns in a data frame. Please note that this function uses functions in `tidyverse` library. Please make sure that you load that library.
 #' 
 #' @param df a data frame. I name this parameter as `df` because it is the abbreviation of data frame.
-#' @param vars a vector containing selected name(s) of variable(s) in `df`. These selected variables will be included in the plot. The default is to show the proportion of missing values for all variables in `df`. I name this parameter as `vars` because it is an abbreviation variables.
+#' @param vars a vector containing selected name(s) of variable(s) in \code{df}. These selected variables will be included in the plot. The default is to show the proportion of missing values for all variables in \code{df}. I name this parameter as `vars` because it is an abbreviation variables.
 #' @param point_color the color to be used for the points. The default is "blue". The name of this param basically describe what it is for. 
 #' @param line_color the color to be used for the lines. The default is "blue". The name of this param basically describe what it is for. 
 #' @param ylab the title of the y axis. Here I use the name `ylab` to follow the ggplot convention.
@@ -52,6 +79,7 @@ plot_missing_values_proportions <- function(df, vars=everything(),
                     pivot_longer(cols = everything(),
                                  names_to = "Variable",
                                  values_to = "missing_count")
+  #print(count_missing)
   
   # Plot it
   ggplot(data = count_missing,
@@ -69,46 +97,73 @@ plot_missing_values_proportions <- function(df, vars=everything(),
     coord_flip() +
     labs(y = xlab,x = ylab)
 }
-
 ```
-
 
 ## Exercise 3: Include examples
-In this section, I will demonstrate the usage of my function with a few examples. 
+
+In this section, I will demonstrate the usage of my function with a few
+examples.
 
 ### Example 1
-In this example, I use the function `plot_missing_values_proportions()` to visualize the proportion of missing values for all columns in the *vancouver_trees* dataset. We can specify the color of the points and lines in the plot using the `point_color` and `line_color` arguments.
-```{r}
+
+In this example, I use the function `plot_missing_values_proportions()`
+to visualize the proportion of missing values for all columns in the
+*vancouver_trees* dataset. We can specify the color of the points and
+lines in the plot using the `point_color` and `line_color` arguments.
+
+``` r
 # for all variables in vancouver_trees
 plot_missing_values_proportions(df=vancouver_trees, point_color = 'darkgreen', line_color = 'darkgreen')
-
 ```
 
+![](Assignment-1_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
+
 ### Example 2
-We can also choose to visualize the proportion of missing values for some selected columns in the *vancouver_trees* dataset by specifying column names using the `vars` argument.
-```{r}
+
+We can also choose to visualize the proportion of missing values for
+some selected columns in the *vancouver_trees* dataset by specifying
+column names using the `vars` argument.
+
+``` r
 # for selected variables in vancouver_trees
 plot_missing_values_proportions(df=vancouver_trees, 
                                 vars = c(species_name, root_barrier,
                                          height_range_id, diameter, date_planted))
 ```
 
+![](Assignment-1_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
+
 ### Example 3
-Here I visualize the proportion of missing values for all columns in a dataset named *flow_sample*, and change the title of the y axis to "Columns".
-```{r}
+
+Here I visualize the proportion of missing values for all columns in a
+dataset named *flow_sample*, and change the title of the y axis to
+“Columns”.
+
+``` r
 # for selected variables in vancouver_trees
 plot_missing_values_proportions(df=flow_sample, ylab = "Columns")
 ```
 
+![](Assignment-1_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
+
 ### Example 4
-Here I want to show that the function will not work if we input a vector instead of a data frame through the `df` argument. 
-```{r error = TRUE}
+
+Here I want to show that the function will not work if we input a vector
+instead of a data frame through the `df` argument.
+
+``` r
 plot_missing_values_proportions(df=c(1,2))
 ```
 
+    ## Error in plot_missing_values_proportions(df = c(1, 2)): I am so sorry, but this function only works for data frame input!
+    ## You have provided an object of class: numeric
+
 ## Exercise 4: Test the Function
-Here I tested the function for the color used and the existence of a GeomBar layer.
-```{r}
+
+Here I tested the function for the color used and the existence of a
+GeomBar layer.
+
+``` r
 # For example 1 given above, test for the color used and the GeomBar layer
 example1 <- plot_missing_values_proportions(df=vancouver_trees, point_color = 'darkgreen',
                                             line_color = 'darkgreen')
@@ -119,8 +174,12 @@ test_that("example1", {
 })
 ```
 
-Here I tested the function for the identity of y used in aes() in the two layers.
-```{r}
+    ## Test passed 🌈
+
+Here I tested the function for the identity of y used in aes() in the
+two layers.
+
+``` r
 # For example 2 given above, test for the identity of y used in aes() in two layers
 example2 <- plot_missing_values_proportions(df=vancouver_trees, 
                                 vars = c(species_name, root_barrier,
@@ -132,9 +191,11 @@ test_that("Example2", {
 })
 ```
 
+    ## Test passed 🥇
 
 Here I tested the function for the title used for the y axis.
-```{r}
+
+``` r
 # Test for example 4: change of the ylab
 example4 <- plot_missing_values_proportions(df=flow_sample, ylab = "Columns")
 test_that("Example4:ylab", {
@@ -143,18 +204,17 @@ test_that("Example4:ylab", {
 })
 ```
 
+    ## Test passed 😀
 
-Here I tested the function for returning the right error message when the input for df is not a dataframe.
-```{r}
+Here I tested the function for returning the right error message when
+the input for df is not a dataframe.
+
+``` r
 # Test for returning error message when the input for df is not a dataframe
 test_that("Non data frame input", {
   expect_error(plot_missing_values_proportions(df=c(4,3,5)), "I am so sorry, but this function only works for data frame input!
 You have provided an object of class: numeric")
 })
-
 ```
 
-
-
-
-
+    ## Test passed 😸
